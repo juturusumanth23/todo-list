@@ -1,10 +1,17 @@
 import { Todo } from "./todos";
+export {Project}
 
 class Project {
-	constructor(name) {
+	constructor(name,user = "Default") {
 		this.name = name;
 		this.todos = {};
-		console.log(`${name} Project Created`);
+		this.user = user;
+		this.priorities = {
+			veryImportant: [],
+			important: [],
+			normal: []
+		};
+		console.log(`${name} Project Created by the ${user} User`);
 	}
 	addTodo(todo) {
 		this.todos[todo.name]=todo;
@@ -12,44 +19,50 @@ class Project {
 	}
 }
 
-const deleter = () => ({
+const deletes = () => ({
 	delete: function (todo) {
 		console.log(this.todos[todo.name]);
 		console.log(`${todo.name} is deleted from the "${this.name}" Project`);
 	}
 })
 
-const changer = () => ({
+const changes = () => ({
 	change: (todo, dest) => {
 		this.delete(todo);
 		dest.addTodo(todo);
 	}
 })
 
-const completer = () => ({
+const completes = () => ({
 	complete: (todo) => {
 		todo.checkList = true;
 	}
 })
 
-const canPrint = () => ({
+const prints = () => ({
 	print: function(item) {
 		console.log(this[item]);
 	}
 })
 
-Object.assign(Project.prototype, deleter(), changer(), completer(), canPrint());
+const setsPriority = () => ({
+	setPriority: function(item, priority) {
+		this.priority[priority].push(item);
+	}
+})
+
+Object.assign(Project.prototype, deletes(), changes(), completes(), prints(), setsPriority());
 
 
-const defaultProject = new Project("default");
-const project1 = new Project("project1");
+export const defaultProject = new Project("default");
 
-const todo1 = new Todo({name:"sumanth"});
+const todo1 = new Todo("sumanth");
 
+defaultProject.print("todos");
 defaultProject.addTodo(todo1);
-console.log(defaultProject.todos)
+defaultProject.print("todos");
 
 defaultProject.delete(todo1);
 defaultProject.print("todos");
 console.log(Project.prototype, typeof Project.prototype.delete, typeof Project.prototype.change);
-defaultProject.print("todos");
+defaultProject.print("priorities");

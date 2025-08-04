@@ -1,8 +1,8 @@
 export {Todo}
 
 class Todo {
-	constructor(todo) {
-		this.name = todo.name;
+	constructor(name) {
+		this.name = name;
 		// this.description = todo.description;
 		// this.dueDate = todo.dueDate;
 		// this.priority = todo.priority;
